@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 use std::{env, path, time::Duration};
 
 use ggez::*;
@@ -5,10 +7,12 @@ use ggez::{ContextBuilder, Context, GameResult};
 use ggez::event::{EventHandler, KeyCode, KeyMods};
 
 extern crate nalgebra as na;
-use na::{Vector2, Point2};
+use na::Point2;
 
 mod gfx;
 mod util;
+mod physics;
+mod platform;
 
 mod scenes;
 use scenes::*;
@@ -50,6 +54,9 @@ impl EventHandler for MainState {
         graphics::set_screen_coordinates(ctx, new_rect).unwrap();
         graphics::apply_transformations(ctx).unwrap();
 
+        // Draw scene name
+        draw_current_scene_text(ctx, self.current_scene.name());
+
         graphics::present(ctx)?;
 
         self.ticks += 1;
@@ -78,6 +85,27 @@ impl EventHandler for MainState {
     ) {
         self.current_scene.input(&mut self.world, keycode, false, false);    
     }
+}
+
+fn draw_current_scene_text(ctx: &mut Context, text: &str) {
+    let fragment = graphics::TextFragment::new(text)
+    .color(graphics::Color::from((192, 128, 64, 255)))
+    .font(graphics::Font::new(ctx, "/DejaVuSerif.ttf").unwrap())
+    .scale(graphics::Scale::uniform(16.0));
+    let scene_text = graphics::Text::new(fragment);
+
+    graphics::queue_text(
+        ctx, &scene_text, 
+        util::point_to_old(Point2::new(10., 10.)), 
+        None
+    );
+
+    graphics::draw_queued_text(
+        ctx,
+        graphics::DrawParam::new(),
+        None,
+        graphics::FilterMode::Nearest,
+    ).unwrap();
 }
 
 fn main() {
