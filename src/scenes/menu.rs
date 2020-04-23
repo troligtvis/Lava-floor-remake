@@ -1,5 +1,6 @@
 use crate::{graphics, Context, Scene, World, KeyCode, level, util};
-
+extern crate nalgebra as na;
+use na::Point2;
 
 pub struct MenuScene {
     title_text: graphics::Text,
@@ -32,11 +33,11 @@ impl MenuScene {
 impl Scene<World> for MenuScene {
     fn update(
         &mut self, 
-        _ctx: &mut Context, 
-        _world: &mut World
+        ctx: &mut Context, 
+        world: &mut World
     ) -> Option<Box<dyn Scene<World>>> {
         if self.is_done {
-            let next_scene = level::LevelScene::new();
+            let next_scene = level::LevelScene::new(ctx, world);
             Some(Box::new(next_scene))
         } else {
             None
@@ -53,11 +54,10 @@ impl Scene<World> for MenuScene {
         let title_text_width = self.title_text.width(ctx) as f32;
         let title_text_height = self.title_text.height(ctx) as f32;
 
-        
-        let title_text_dest = ggez::nalgebra::Point2::new(
+        let title_text_dest = util::point_to_old(Point2::new(
             (window_width as f32 / 2.0) - (title_text_width / 2.0),
             (window_height as f32 / 2.0) - (title_text_height + 20.0),
-        );
+        ));
 
         graphics::draw(
             ctx,
@@ -69,11 +69,11 @@ impl Scene<World> for MenuScene {
 
        let begin_text_width = self.begin_text.width(ctx) as f32;
        let begin_text_height = self.begin_text.height(ctx) as f32;
-
-       let begin_text_dest = ggez::nalgebra::Point2::new(
+        
+       let begin_text_dest = util::point_to_old(Point2::new(
            (window_width as f32 / 2.0) - (begin_text_width / 2.0),
            (window_height as f32 / 2.0) + (title_text_height + 20.0) - (begin_text_height + 20.0),
-       );
+       ));
 
        graphics::draw(
             ctx,

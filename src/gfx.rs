@@ -58,8 +58,6 @@ impl GfxUtil {
             };
 
             let (image_width, image_height) = self.player_sprite.dimension;
-            // let half_w = image_width as f32 / PAWN_RADIUS;
-            // let half_h = image_height as f32 / PAWN_RADIUS;
 
             let position = pawn.position;
             let dest = Point2::new(position.x, position.y);
