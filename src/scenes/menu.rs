@@ -88,7 +88,7 @@ impl Scene<World> for MenuScene {
         &mut self, 
         _world: &mut World, 
         keycode: KeyCode, 
-        _started: bool, 
+        _pressed: bool, 
         _repeat: bool
     ) {
         if keycode == KeyCode::Space {

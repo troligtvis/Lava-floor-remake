@@ -13,6 +13,7 @@ mod gfx;
 mod util;
 mod physics;
 mod platform;
+mod player;
 
 mod scenes;
 use scenes::*;
@@ -55,7 +56,7 @@ impl EventHandler for MainState {
         graphics::apply_transformations(ctx).unwrap();
 
         // Draw scene name
-        draw_current_scene_text(ctx, self.current_scene.name());
+        //draw_current_scene_text(ctx, self.current_scene.name());
 
         graphics::present(ctx)?;
 
@@ -87,6 +88,7 @@ impl EventHandler for MainState {
     }
 }
 
+// FIXME: Very slow
 fn draw_current_scene_text(ctx: &mut Context, text: &str) {
     let fragment = graphics::TextFragment::new(text)
     .color(graphics::Color::from((192, 128, 64, 255)))
